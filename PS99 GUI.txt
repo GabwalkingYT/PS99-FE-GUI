@@ -1,100 +1,115 @@
-local player = game.Players.LocalPlayer
-local gui = Instance.new("ScreenGui")
-gui.Name = "PS99Gui"
-gui.ResetOnSpawn = false
-gui.Parent = player:WaitForChild("PlayerGui")
+-- LocalScript inside StarterGui > ScreenGui
+local ScreenGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local Title = Instance.new("TextLabel")
+local CloseBtn = Instance.new("TextButton")
+local OpenBtn = Instance.new("TextButton")
+local PetSpawnerBtn = Instance.new("TextButton")
+local GemSpawnerBtn = Instance.new("TextButton")
+local HoverboardBtn = Instance.new("TextButton")
+local GamepassBtn = Instance.new("TextButton")
+local InfYieldBtn = Instance.new("TextButton")
+local UIS = game:GetService("UserInputService")
 
--- Main Frame
-local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0, 400, 0, 250)
-frame.Position = UDim2.new(0.3, 0, 0.3, 0)
-frame.BackgroundColor3 = Color3.fromHSV(0, 1, 1)
-frame.BorderSizePixel = 0
-frame.Active = true
-frame.Draggable = true
-frame.Parent = gui
+ScreenGui.Name = "PS99_FE_GUI"
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ResetOnSpawn = false
 
--- Title
-local title = Instance.new("TextLabel")
-title.Size = UDim2.new(1, -40, 0.15, 0)
-title.Position = UDim2.new(0, 10, 0, 0)
-title.BackgroundTransparency = 1
-title.Text = "PS99 Fe SCRIPT OP!"
-title.TextScaled = true
-title.Font = Enum.Font.FredokaOne
-title.TextColor3 = Color3.new(1, 1, 1)
-title.TextXAlignment = Enum.TextXAlignment.Left
-title.Parent = frame
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+MainFrame.BorderSizePixel = 0
+MainFrame.Position = UDim2.new(0.3, 0, 0.3, 0)
+MainFrame.Size = UDim2.new(0, 300, 0, 400)
+MainFrame.Active = true
+MainFrame.Draggable = true
 
--- Close Button
-local closeBtn = Instance.new("TextButton")
-closeBtn.Size = UDim2.new(0, 30, 0, 30)
-closeBtn.Position = UDim2.new(1, -35, 0, 5)
-closeBtn.Text = "X"
-closeBtn.TextScaled = true
-closeBtn.Font = Enum.Font.SourceSansBold
-closeBtn.TextColor3 = Color3.new(1, 1, 1)
-closeBtn.BackgroundColor3 = Color3.new(1, 0, 0)
-closeBtn.Parent = frame
+Title.Name = "Title"
+Title.Parent = MainFrame
+Title.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+Title.BorderSizePixel = 0
+Title.Size = UDim2.new(1, 0, 0, 40)
+Title.Font = Enum.Font.GothamBlack
+Title.Text = "PS99 Fe SCRIPT OP!"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextSize = 20
 
--- Open Button (starts hidden)
-local openBtn = Instance.new("TextButton")
-openBtn.Size = UDim2.new(0, 100, 0, 40)
-openBtn.Position = UDim2.new(0, 10, 0, 10)
-openBtn.Text = "Open GUI"
-openBtn.TextScaled = true
-openBtn.Font = Enum.Font.SourceSansBold
-openBtn.TextColor3 = Color3.new(1, 1, 1)
-openBtn.BackgroundColor3 = Color3.new(0, 1, 0)
-openBtn.Visible = false
-openBtn.Parent = gui
+CloseBtn.Name = "CloseBtn"
+CloseBtn.Parent = MainFrame
+CloseBtn.Position = UDim2.new(1, -30, 0, 5)
+CloseBtn.Size = UDim2.new(0, 25, 0, 25)
+CloseBtn.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
+CloseBtn.Text = "X"
+CloseBtn.TextColor3 = Color3.new(1, 1, 1)
+CloseBtn.Font = Enum.Font.GothamBold
+CloseBtn.TextSize = 14
 
--- Pet Spawner Button
-local petSpawnerBtn = Instance.new("TextButton")
-petSpawnerBtn.Size = UDim2.new(0.8, 0, 0.15, 0)
-petSpawnerBtn.Position = UDim2.new(0.1, 0, 0.2, 0)
-petSpawnerBtn.Text = "Pet Spawner"
-petSpawnerBtn.TextScaled = true
-petSpawnerBtn.Font = Enum.Font.GothamBold
-petSpawnerBtn.TextColor3 = Color3.new(1, 1, 1)
-petSpawnerBtn.BackgroundColor3 = Color3.fromRGB(50, 100, 200)
-petSpawnerBtn.Parent = frame
+OpenBtn.Name = "OpenBtn"
+OpenBtn.Parent = ScreenGui
+OpenBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+OpenBtn.Position = UDim2.new(0, 10, 0.5, -20)
+OpenBtn.Size = UDim2.new(0, 100, 0, 40)
+OpenBtn.Text = "Open GUI"
+OpenBtn.TextColor3 = Color3.new(1, 1, 1)
+OpenBtn.Font = Enum.Font.GothamBold
+OpenBtn.TextSize = 14
+OpenBtn.Visible = false
 
-petSpawnerBtn.MouseButton1Click:Connect(function()
-	print("Pet Spawner button clicked!") -- Replace this with your actual Pet Spawner script
+-- Buttons
+local function makeButton(name, yPos, text)
+	local btn = Instance.new("TextButton")
+	btn.Name = name
+	btn.Parent = MainFrame
+	btn.Position = UDim2.new(0, 20, 0, yPos)
+	btn.Size = UDim2.new(0, 260, 0, 40)
+	btn.Text = text
+	btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+	btn.TextColor3 = Color3.new(1, 1, 1)
+	btn.Font = Enum.Font.Gotham
+	btn.TextSize = 14
+	return btn
+end
+
+PetSpawnerBtn = makeButton("PetSpawnerBtn", 60, "Pet Spawner")
+GemSpawnerBtn = makeButton("GemSpawnerBtn", 110, "Gem Spawner")
+HoverboardBtn = makeButton("HoverboardBtn", 160, "Hoverboard Spawner")
+GamepassBtn = makeButton("GamepassBtn", 210, "Gamepass Spawner")
+InfYieldBtn = makeButton("InfYieldBtn", 260, "INF YIELD")
+
+-- Button functionality
+CloseBtn.MouseButton1Click:Connect(function()
+	MainFrame.Visible = false
+	OpenBtn.Visible = true
 end)
 
--- INF YIELD Button
-local infYieldBtn = Instance.new("TextButton")
-infYieldBtn.Size = UDim2.new(0.8, 0, 0.15, 0)
-infYieldBtn.Position = UDim2.new(0.1, 0, 0.4, 0)
-infYieldBtn.Text = "INF YIELD"
-infYieldBtn.TextScaled = true
-infYieldBtn.Font = Enum.Font.GothamBlack
-infYieldBtn.TextColor3 = Color3.new(1, 1, 1)
-infYieldBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-infYieldBtn.Parent = frame
+OpenBtn.MouseButton1Click:Connect(function()
+	MainFrame.Visible = true
+	OpenBtn.Visible = false
+end)
 
-infYieldBtn.MouseButton1Click:Connect(function()
+PetSpawnerBtn.MouseButton1Click:Connect(function()
+	loadstring(game:HttpGet("https://your-link.com/pet-spawner.lua"))()
+end)
+
+GemSpawnerBtn.MouseButton1Click:Connect(function()
+	loadstring(game:HttpGet("https://your-link.com/gem-spawner.lua"))()
+end)
+
+HoverboardBtn.MouseButton1Click:Connect(function()
+	loadstring(game:HttpGet("https://your-link.com/hoverboard-spawner.lua"))()
+end)
+
+GamepassBtn.MouseButton1Click:Connect(function()
+	loadstring(game:HttpGet("https://your-link.com/gamepass-spawner.lua"))()
+end)
+
+InfYieldBtn.MouseButton1Click:Connect(function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
 end)
 
 -- Rainbow background animation
-local RunService = game:GetService("RunService")
 local hue = 0
-
-RunService.RenderStepped:Connect(function()
-	hue = (hue + 1) % 360
-	frame.BackgroundColor3 = Color3.fromHSV(hue / 360, 1, 1)
-end)
-
--- Close/Open logic
-closeBtn.MouseButton1Click:Connect(function()
-	frame.Visible = false
-	openBtn.Visible = true
-end)
-
-openBtn.MouseButton1Click:Connect(function()
-	frame.Visible = true
-	openBtn.Visible = false
+game:GetService("RunService").RenderStepped:Connect(function()
+	hue = (hue + 0.005) % 1
+	MainFrame.BackgroundColor3 = Color3.fromHSV(hue, 1, 1)
 end)
