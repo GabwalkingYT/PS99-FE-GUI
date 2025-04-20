@@ -1,11 +1,15 @@
 -- LocalScript inside StarterGui > ScreenGui
 local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 
 local player = Players.LocalPlayer
 local ScreenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
 ScreenGui.Name = "PS99_FE_GUI"
 ScreenGui.ResetOnSpawn = false
+
+-- RemoteEvent for communication with the server
+local spawnRemote = ReplicatedStorage:WaitForChild("SpawnRemote")
 
 -- MAIN FRAME
 local MainFrame = Instance.new("Frame", ScreenGui)
@@ -43,6 +47,7 @@ OpenBtn.TextColor3 = Color3.new(1, 1, 1)
 OpenBtn.Font = Enum.Font.GothamBold
 OpenBtn.TextSize = 14
 
+-- Function to create buttons for different spawners
 local function makeButton(name, y, text)
     local btn = Instance.new("TextButton", MainFrame)
     btn.Name = name
@@ -158,7 +163,8 @@ SpawnBtn.MouseButton1Click:Connect(function()
     if amount and currentSpawner then
         Popup.Visible = false
         print("Spawning", amount, currentSpawner)
-        -- Insert your spawner logic here (use amount and currentSpawner to spawn items)
+        -- Send to server to handle actual spawning
+        spawnRemote:FireServer(currentSpawner, amount)
 
         -- Show the Spawned confirmation popup
         showSpawnedPopup()
