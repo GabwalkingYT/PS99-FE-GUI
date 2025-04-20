@@ -1,41 +1,30 @@
 -- LocalScript inside StarterGui > ScreenGui
-local ScreenGui = Instance.new("ScreenGui")
-local MainFrame = Instance.new("Frame")
-local Title = Instance.new("TextLabel")
-local CloseBtn = Instance.new("TextButton")
-local OpenBtn = Instance.new("TextButton")
-local PetSpawnerBtn = Instance.new("TextButton")
-local GemSpawnerBtn = Instance.new("TextButton")
-local HoverboardBtn = Instance.new("TextButton")
-local GamepassBtn = Instance.new("TextButton")
-local InfYieldBtn = Instance.new("TextButton")
-local UIS = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
 
+local player = Players.LocalPlayer
+local ScreenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
 ScreenGui.Name = "PS99_FE_GUI"
-ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 ScreenGui.ResetOnSpawn = false
 
+-- MAIN FRAME
+local MainFrame = Instance.new("Frame", ScreenGui)
 MainFrame.Name = "MainFrame"
-MainFrame.Parent = ScreenGui
-MainFrame.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-MainFrame.BorderSizePixel = 0
 MainFrame.Position = UDim2.new(0.3, 0, 0.3, 0)
 MainFrame.Size = UDim2.new(0, 300, 0, 400)
+MainFrame.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 MainFrame.Active = true
 MainFrame.Draggable = true
 
-Title.Name = "Title"
-Title.Parent = MainFrame
-Title.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-Title.BorderSizePixel = 0
+local Title = Instance.new("TextLabel", MainFrame)
 Title.Size = UDim2.new(1, 0, 0, 40)
+Title.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+Title.Text = "Ps99 OP GUI"
+Title.TextColor3 = Color3.new(1, 1, 1)
 Title.Font = Enum.Font.GothamBlack
-Title.Text = "PS99 Fe SCRIPT OP!"
-Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.TextSize = 20
 
-CloseBtn.Name = "CloseBtn"
-CloseBtn.Parent = MainFrame
+local CloseBtn = Instance.new("TextButton", MainFrame)
 CloseBtn.Position = UDim2.new(1, -30, 0, 5)
 CloseBtn.Size = UDim2.new(0, 25, 0, 25)
 CloseBtn.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
@@ -44,23 +33,20 @@ CloseBtn.TextColor3 = Color3.new(1, 1, 1)
 CloseBtn.Font = Enum.Font.GothamBold
 CloseBtn.TextSize = 14
 
-OpenBtn.Name = "OpenBtn"
-OpenBtn.Parent = ScreenGui
-OpenBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+local OpenBtn = Instance.new("TextButton", ScreenGui)
 OpenBtn.Position = UDim2.new(0, 10, 0.5, -20)
 OpenBtn.Size = UDim2.new(0, 100, 0, 40)
+OpenBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
 OpenBtn.Text = "Open GUI"
 OpenBtn.TextColor3 = Color3.new(1, 1, 1)
 OpenBtn.Font = Enum.Font.GothamBold
 OpenBtn.TextSize = 14
 OpenBtn.Visible = false
 
--- Buttons
-local function makeButton(name, yPos, text)
-	local btn = Instance.new("TextButton")
+local function makeButton(name, y, text)
+	local btn = Instance.new("TextButton", MainFrame)
 	btn.Name = name
-	btn.Parent = MainFrame
-	btn.Position = UDim2.new(0, 20, 0, yPos)
+	btn.Position = UDim2.new(0, 20, 0, y)
 	btn.Size = UDim2.new(0, 260, 0, 40)
 	btn.Text = text
 	btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
@@ -70,13 +56,55 @@ local function makeButton(name, yPos, text)
 	return btn
 end
 
-PetSpawnerBtn = makeButton("PetSpawnerBtn", 60, "Pet Spawner")
-GemSpawnerBtn = makeButton("GemSpawnerBtn", 110, "Gem Spawner")
-HoverboardBtn = makeButton("HoverboardBtn", 160, "Hoverboard Spawner")
-GamepassBtn = makeButton("GamepassBtn", 210, "Gamepass Spawner")
-InfYieldBtn = makeButton("InfYieldBtn", 260, "INF YIELD")
+local PetSpawnerBtn = makeButton("PetSpawnerBtn", 60, "Pet Spawner")
+local GemSpawnerBtn = makeButton("GemSpawnerBtn", 110, "Gem Spawner")
+local HoverboardBtn = makeButton("HoverboardBtn", 160, "Hoverboard Spawner")
+local GamepassBtn = makeButton("GamepassBtn", 210, "Gamepass Spawner")
+local InfYieldBtn = makeButton("InfYieldBtn", 260, "INF YIELD")
 
--- Button functionality
+-- POPUP FRAME
+local Popup = Instance.new("Frame", ScreenGui)
+Popup.Position = UDim2.new(0.35, 0, 0.35, 0)
+Popup.Size = UDim2.new(0, 250, 0, 150)
+Popup.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+Popup.Visible = false
+
+local PopupTitle = Instance.new("TextLabel", Popup)
+PopupTitle.Size = UDim2.new(1, 0, 0, 40)
+PopupTitle.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+PopupTitle.Text = "ULTIMATE SPAWNER"
+PopupTitle.TextColor3 = Color3.new(1, 1, 1)
+PopupTitle.Font = Enum.Font.GothamBold
+PopupTitle.TextSize = 16
+
+local InputBox = Instance.new("TextBox", Popup)
+InputBox.Position = UDim2.new(0.1, 0, 0.4, 0)
+InputBox.Size = UDim2.new(0.8, 0, 0, 30)
+InputBox.PlaceholderText = "Enter amount to spawn"
+InputBox.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+InputBox.TextColor3 = Color3.new(1, 1, 1)
+InputBox.Font = Enum.Font.Gotham
+InputBox.TextSize = 14
+
+local SpawnBtn = Instance.new("TextButton", Popup)
+SpawnBtn.Position = UDim2.new(0.25, 0, 0.7, 0)
+SpawnBtn.Size = UDim2.new(0.5, 0, 0, 30)
+SpawnBtn.Text = "Spawn"
+SpawnBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+SpawnBtn.TextColor3 = Color3.new(1, 1, 1)
+SpawnBtn.Font = Enum.Font.GothamBold
+SpawnBtn.TextSize = 14
+
+local currentSpawner = nil
+
+-- Show popup function
+local function showPopup(spawnerType)
+	currentSpawner = spawnerType
+	Popup.Visible = true
+	InputBox.Text = ""
+end
+
+-- GUI logic
 CloseBtn.MouseButton1Click:Connect(function()
 	MainFrame.Visible = false
 	OpenBtn.Visible = true
@@ -87,29 +115,31 @@ OpenBtn.MouseButton1Click:Connect(function()
 	OpenBtn.Visible = false
 end)
 
-PetSpawnerBtn.MouseButton1Click:Connect(function()
-	loadstring(game:HttpGet("https://your-link.com/pet-spawner.lua"))()
-end)
+PetSpawnerBtn.MouseButton1Click:Connect(function() showPopup("pet") end)
+GemSpawnerBtn.MouseButton1Click:Connect(function() showPopup("gem") end)
+HoverboardBtn.MouseButton1Click:Connect(function() showPopup("hover") end)
+GamepassBtn.MouseButton1Click:Connect(function() showPopup("gamepass") end)
 
-GemSpawnerBtn.MouseButton1Click:Connect(function()
-	loadstring(game:HttpGet("https://your-link.com/gem-spawner.lua"))()
-end)
-
-HoverboardBtn.MouseButton1Click:Connect(function()
-	loadstring(game:HttpGet("https://your-link.com/hoverboard-spawner.lua"))()
-end)
-
-GamepassBtn.MouseButton1Click:Connect(function()
-	loadstring(game:HttpGet("https://your-link.com/gamepass-spawner.lua"))()
+SpawnBtn.MouseButton1Click:Connect(function()
+	local amount = tonumber(InputBox.Text)
+	if amount and currentSpawner then
+		Popup.Visible = false
+		print("Spawning", amount, currentSpawner)
+		-- Replace this with actual spawning logic using the amount
+		-- For example:
+		-- loadstring(game:HttpGet("your-link.lua"))()
+	end
 end)
 
 InfYieldBtn.MouseButton1Click:Connect(function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
 end)
 
--- Rainbow background animation
+-- 🌈 Rainbow Background for both MainFrame and Popup
 local hue = 0
-game:GetService("RunService").RenderStepped:Connect(function()
+RunService.RenderStepped:Connect(function()
 	hue = (hue + 0.005) % 1
-	MainFrame.BackgroundColor3 = Color3.fromHSV(hue, 1, 1)
+	local color = Color3.fromHSV(hue, 1, 1)
+	MainFrame.BackgroundColor3 = color
+	Popup.BackgroundColor3 = color
 end)
