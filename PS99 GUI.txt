@@ -65,7 +65,7 @@ local AutoFarmBtn = makeButton("AutoFarmBtn", 310, "AutoFarm")
 local InfYieldBtn = makeButton("InfYieldBtn", 360, "INF YIELD")
 local UltimateSpawnerBtn = makeButton("UltimateSpawnerBtn", 410, "Ultimate Spawner")
 
--- POPUP FRAME
+-- POPUP FRAME (Ultimate Spawner)
 local Popup = Instance.new("Frame", ScreenGui)
 Popup.Position = UDim2.new(0.35, 0, 0.35, 0)
 Popup.Size = UDim2.new(0, 250, 0, 150)
@@ -158,7 +158,7 @@ SpawnBtn.MouseButton1Click:Connect(function()
     if amount and currentSpawner then
         Popup.Visible = false
         print("Spawning", amount, currentSpawner)
-        -- Insert your spawner logic here
+        -- Insert your spawner logic here (use amount and currentSpawner to spawn items)
 
         -- Show the Spawned confirmation popup
         showSpawnedPopup()
@@ -177,3 +177,22 @@ RunService.RenderStepped:Connect(function()
     MainFrame.BackgroundColor3 = color
     Popup.BackgroundColor3 = color
 end)
+
+-- Check if the player is in the correct game (Pet Simulator 99)
+local correctPlaceId = 8737899170  -- Replace this with the actual PlaceId of Pet Simulator 99
+
+local function checkGame()
+    if game.PlaceId ~= correctPlaceId then
+        -- Display a message to the player
+        local message = Instance.new("Message", game.Workspace)
+        message.Text = "This is not PS99! Kicking you out..."
+        wait(3)  -- Wait for 3 seconds to show the message
+        message:Destroy()
+
+        -- Kick the player out
+        game.Players.LocalPlayer:Kick("This is not PS99. You have been kicked.")
+    end
+end
+
+-- Call the function when the game is loaded
+checkGame()
