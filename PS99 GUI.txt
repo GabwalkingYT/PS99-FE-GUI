@@ -66,9 +66,7 @@ local GemSpawnerBtn = makeButton("GemSpawnerBtn", 110, "Gem Spawner")
 local HoverboardBtn = makeButton("HoverboardBtn", 160, "Hoverboard Spawner")
 local GamepassBtn = makeButton("GamepassBtn", 210, "Gamepass Spawner")
 local TitanicSpawnerBtn = makeButton("TitanicSpawnerBtn", 260, "Titanic Spawner")
-local AutoFarmBtn = makeButton("AutoFarmBtn", 310, "AutoFarm")
-local InfYieldBtn = makeButton("InfYieldBtn", 360, "INF YIELD")
-local UltimateSpawnerBtn = makeButton("UltimateSpawnerBtn", 410, "Ultimate Spawner")
+local UltimateSpawnerBtn = makeButton("UltimateSpawnerBtn", 310, "Ultimate Spawner")
 
 -- POPUP FRAME (Ultimate Spawner)
 local Popup = Instance.new("Frame", ScreenGui)
@@ -88,7 +86,7 @@ PopupTitle.TextSize = 16
 local InputBox = Instance.new("TextBox", Popup)
 InputBox.Position = UDim2.new(0.1, 0, 0.4, 0)
 InputBox.Size = UDim2.new(0.8, 0, 0, 30)
-InputBox.PlaceholderText = "Spawn Anything Enjoy! 🌈"
+InputBox.PlaceholderText = "Enter something to spawn"
 InputBox.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 InputBox.TextColor3 = Color3.new(1, 1, 1)
 InputBox.Font = Enum.Font.Gotham
@@ -103,39 +101,6 @@ SpawnBtn.TextColor3 = Color3.new(1, 1, 1)
 SpawnBtn.Font = Enum.Font.GothamBold
 SpawnBtn.TextSize = 14
 
--- Spawned Confirmation Popup
-local SpawnedPopup = Instance.new("Frame", ScreenGui)
-SpawnedPopup.Position = UDim2.new(0.35, 0, 0.35, 0)
-SpawnedPopup.Size = UDim2.new(0, 200, 0, 100)
-SpawnedPopup.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-SpawnedPopup.Visible = false
-
-local SpawnedLabel = Instance.new("TextLabel", SpawnedPopup)
-SpawnedLabel.Size = UDim2.new(1, 0, 1, 0)
-SpawnedLabel.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-SpawnedLabel.Text = "Spawned!!"
-SpawnedLabel.TextColor3 = Color3.new(1, 1, 1)
-SpawnedLabel.Font = Enum.Font.GothamBold
-SpawnedLabel.TextSize = 20
-SpawnedLabel.TextAlign = Enum.TextXAlignment.Center
-SpawnedLabel.TextYAlignment = Enum.TextYAlignment.Center
-
--- Show "Spawned!!" Popup
-local function showSpawnedPopup()
-    SpawnedPopup.Visible = true
-    wait(2)  -- Show for 2 seconds
-    SpawnedPopup.Visible = false
-end
-
-local currentSpawner = nil
-
--- Show popup function
-local function showPopup(spawnerType)
-    currentSpawner = spawnerType
-    Popup.Visible = true
-    InputBox.Text = ""
-end
-
 -- GUI logic
 CloseBtn.MouseButton1Click:Connect(function()
     MainFrame.Visible = false
@@ -147,32 +112,44 @@ OpenBtn.MouseButton1Click:Connect(function()
     OpenBtn.Visible = false
 end)
 
-PetSpawnerBtn.MouseButton1Click:Connect(function() showPopup("pet") end)
-GemSpawnerBtn.MouseButton1Click:Connect(function() showPopup("gem") end)
-HoverboardBtn.MouseButton1Click:Connect(function() showPopup("hoverboard") end)
-GamepassBtn.MouseButton1Click:Connect(function() showPopup("gamepass") end)
-TitanicSpawnerBtn.MouseButton1Click:Connect(function() showPopup("titanic") end)
-UltimateSpawnerBtn.MouseButton1Click:Connect(function() showPopup("ultimate") end)
-AutoFarmBtn.MouseButton1Click:Connect(function()
-    print("AutoFarm activated")
-    -- Insert your AutoFarm logic here
+PetSpawnerBtn.MouseButton1Click:Connect(function() 
+    Popup.Visible = true
+    InputBox.Text = ""
 end)
 
+GemSpawnerBtn.MouseButton1Click:Connect(function() 
+    Popup.Visible = true
+    InputBox.Text = ""
+end)
+
+HoverboardBtn.MouseButton1Click:Connect(function() 
+    Popup.Visible = true
+    InputBox.Text = ""
+end)
+
+GamepassBtn.MouseButton1Click:Connect(function() 
+    Popup.Visible = true
+    InputBox.Text = ""
+end)
+
+TitanicSpawnerBtn.MouseButton1Click:Connect(function() 
+    Popup.Visible = true
+    InputBox.Text = ""
+end)
+
+UltimateSpawnerBtn.MouseButton1Click:Connect(function() 
+    Popup.Visible = true
+    InputBox.Text = ""
+end)
+
+-- Spawning logic for the Ultimate Spawner
 SpawnBtn.MouseButton1Click:Connect(function()
-    local amount = InputBox.Text  -- Now accepts both numbers and words
-    if amount and currentSpawner then
+    local amount = InputBox.Text  -- Accept both numbers and words
+    if amount then
         Popup.Visible = false
-        print("Spawning", amount, currentSpawner)
-        -- Send to server to handle actual spawning
-        spawnRemote:FireServer(currentSpawner, amount)
-
-        -- Show the Spawned confirmation popup
-        showSpawnedPopup()
+        print("Spawning", amount)  -- Send spawn request to server via RemoteEvent
+        spawnRemote:FireServer("ultimate", amount)  -- Replace with your actual spawning function
     end
-end)
-
-InfYieldBtn.MouseButton1Click:Connect(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
 end)
 
 -- 🌈 Rainbow Background Animation
@@ -184,21 +161,4 @@ RunService.RenderStepped:Connect(function()
     Popup.BackgroundColor3 = color
 end)
 
--- Check if the player is in the correct game (Pet Simulator 99)
-local correctPlaceId = 8737899170  -- Replace this with the actual PlaceId of Pet Simulator 99
-
-local function checkGame()
-    if game.PlaceId ~= correctPlaceId then
-        -- Display a message to the player
-        local message = Instance.new("Message", game.Workspace)
-        message.Text = "This is not PS99! Kicking you out..."
-        wait(3)  -- Wait for 3 seconds to show the message
-        message:Destroy()
-
-        -- Kick the player out
-        game.Players.LocalPlayer:Kick("This is not PS99. You have been kicked.")
-    end
-end
-
--- Call the function when the game is loaded
-checkGame()
+-- NOTE: Removed the kick script and autofarm feature.
