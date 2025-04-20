@@ -1,164 +1,154 @@
--- LocalScript inside StarterGui > ScreenGui
+-- PS99 OP GUI | With "Spawned!!" Message and Rainbow Button Label
+
 local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 
 local player = Players.LocalPlayer
-local ScreenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
-ScreenGui.Name = "PS99_FE_GUI"
-ScreenGui.ResetOnSpawn = false
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.Name = "PS99_OP_GUI"
+gui.ResetOnSpawn = false
 
--- RemoteEvent for communication with the server
-local spawnRemote = ReplicatedStorage:WaitForChild("SpawnRemote")
-
--- MAIN FRAME
-local MainFrame = Instance.new("Frame", ScreenGui)
-MainFrame.Name = "MainFrame"
-MainFrame.Position = UDim2.new(0.3, 0, 0.3, 0)
-MainFrame.Size = UDim2.new(0, 300, 0, 500)
-MainFrame.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-MainFrame.Active = true
-MainFrame.Draggable = true
-MainFrame.Visible = false -- Initially hidden
-
-local Title = Instance.new("TextLabel", MainFrame)
-Title.Size = UDim2.new(1, 0, 0, 40)
-Title.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-Title.Text = "Ps99 OP GUI"
-Title.TextColor3 = Color3.new(1, 1, 1)
-Title.Font = Enum.Font.GothamBlack
-Title.TextSize = 20
-
-local CloseBtn = Instance.new("TextButton", MainFrame)
-CloseBtn.Position = UDim2.new(1, -30, 0, 5)
-CloseBtn.Size = UDim2.new(0, 25, 0, 25)
-CloseBtn.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
-CloseBtn.Text = "X"
-CloseBtn.TextColor3 = Color3.new(1, 1, 1)
-CloseBtn.Font = Enum.Font.GothamBold
-CloseBtn.TextSize = 14
-
-local OpenBtn = Instance.new("TextButton", ScreenGui)
-OpenBtn.Position = UDim2.new(0, 10, 0.5, -20)
-OpenBtn.Size = UDim2.new(0, 100, 0, 40)
-OpenBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-OpenBtn.Text = "Open GUI"
-OpenBtn.TextColor3 = Color3.new(1, 1, 1)
-OpenBtn.Font = Enum.Font.GothamBold
-OpenBtn.TextSize = 14
-
--- Function to create buttons for different spawners
-local function makeButton(name, y, text)
-    local btn = Instance.new("TextButton", MainFrame)
-    btn.Name = name
-    btn.Position = UDim2.new(0, 20, 0, y)
-    btn.Size = UDim2.new(0, 260, 0, 40)
-    btn.Text = text
-    btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-    btn.TextColor3 = Color3.new(1, 1, 1)
-    btn.Font = Enum.Font.Gotham
-    btn.TextSize = 14
-    return btn
-end
-
-local PetSpawnerBtn = makeButton("PetSpawnerBtn", 60, "Pet Spawner")
-local GemSpawnerBtn = makeButton("GemSpawnerBtn", 110, "Gem Spawner")
-local HoverboardBtn = makeButton("HoverboardBtn", 160, "Hoverboard Spawner")
-local GamepassBtn = makeButton("GamepassBtn", 210, "Gamepass Spawner")
-local TitanicSpawnerBtn = makeButton("TitanicSpawnerBtn", 260, "Titanic Spawner")
-local UltimateSpawnerBtn = makeButton("UltimateSpawnerBtn", 310, "Ultimate Spawner")
-
--- POPUP FRAME (Ultimate Spawner)
-local Popup = Instance.new("Frame", ScreenGui)
-Popup.Position = UDim2.new(0.35, 0, 0.35, 0)
-Popup.Size = UDim2.new(0, 250, 0, 150)
-Popup.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-Popup.Visible = false
-
-local PopupTitle = Instance.new("TextLabel", Popup)
-PopupTitle.Size = UDim2.new(1, 0, 0, 40)
-PopupTitle.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-PopupTitle.Text = "ULTIMATE SPAWNER"
-PopupTitle.TextColor3 = Color3.new(1, 1, 1)
-PopupTitle.Font = Enum.Font.GothamBold
-PopupTitle.TextSize = 16
-
-local InputBox = Instance.new("TextBox", Popup)
-InputBox.Position = UDim2.new(0.1, 0, 0.4, 0)
-InputBox.Size = UDim2.new(0.8, 0, 0, 30)
-InputBox.PlaceholderText = "Enter something to spawn"
-InputBox.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-InputBox.TextColor3 = Color3.new(1, 1, 1)
-InputBox.Font = Enum.Font.Gotham
-InputBox.TextSize = 14
-
-local SpawnBtn = Instance.new("TextButton", Popup)
-SpawnBtn.Position = UDim2.new(0.25, 0, 0.7, 0)
-SpawnBtn.Size = UDim2.new(0.5, 0, 0, 30)
-SpawnBtn.Text = "Spawn"
-SpawnBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-SpawnBtn.TextColor3 = Color3.new(1, 1, 1)
-SpawnBtn.Font = Enum.Font.GothamBold
-SpawnBtn.TextSize = 14
-
--- GUI logic
-CloseBtn.MouseButton1Click:Connect(function()
-    MainFrame.Visible = false
-    OpenBtn.Visible = true
-end)
-
-OpenBtn.MouseButton1Click:Connect(function()
-    MainFrame.Visible = true
-    OpenBtn.Visible = false
-end)
-
-PetSpawnerBtn.MouseButton1Click:Connect(function() 
-    Popup.Visible = true
-    InputBox.Text = ""
-end)
-
-GemSpawnerBtn.MouseButton1Click:Connect(function() 
-    Popup.Visible = true
-    InputBox.Text = ""
-end)
-
-HoverboardBtn.MouseButton1Click:Connect(function() 
-    Popup.Visible = true
-    InputBox.Text = ""
-end)
-
-GamepassBtn.MouseButton1Click:Connect(function() 
-    Popup.Visible = true
-    InputBox.Text = ""
-end)
-
-TitanicSpawnerBtn.MouseButton1Click:Connect(function() 
-    Popup.Visible = true
-    InputBox.Text = ""
-end)
-
-UltimateSpawnerBtn.MouseButton1Click:Connect(function() 
-    Popup.Visible = true
-    InputBox.Text = ""
-end)
-
--- Spawning logic for the Ultimate Spawner
-SpawnBtn.MouseButton1Click:Connect(function()
-    local amount = InputBox.Text  -- Accept both numbers and words
-    if amount then
-        Popup.Visible = false
-        print("Spawning", amount)  -- Send spawn request to server via RemoteEvent
-        spawnRemote:FireServer("ultimate", amount)  -- Replace with your actual spawning function
-    end
-end)
-
--- 🌈 Rainbow Background Animation
+-- Rainbow background effect
 local hue = 0
 RunService.RenderStepped:Connect(function()
-    hue = (hue + 0.005) % 1
-    local color = Color3.fromHSV(hue, 1, 1)
-    MainFrame.BackgroundColor3 = color
-    Popup.BackgroundColor3 = color
+	hue = (hue + 0.001) % 1
+	local color = Color3.fromHSV(hue, 1, 1)
+	if gui:FindFirstChild("Main") then
+		gui.Main.BackgroundColor3 = color
+	end
+	if gui:FindFirstChild("SpawnerPopup") then
+		gui.SpawnerPopup.BackgroundColor3 = color
+	end
 end)
 
--- NOTE: Removed the kick script and autofarm feature.
+-- Open Button
+local openButton = Instance.new("TextButton", gui)
+openButton.Size = UDim2.new(0, 180, 0, 40)
+openButton.Position = UDim2.new(0, 10, 0.5, -20)
+openButton.Text = "PS99 OP SCRIPT 🌈"
+openButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+openButton.TextColor3 = Color3.new(1, 1, 1)
+openButton.Font = Enum.Font.GothamBold
+openButton.TextSize = 14
+
+-- Main GUI
+local main = Instance.new("Frame", gui)
+main.Name = "Main"
+main.Position = UDim2.new(0.3, 0, 0.3, 0)
+main.Size = UDim2.new(0, 300, 0, 400)
+main.Visible = false
+main.Active = true
+main.Draggable = true
+
+local title = Instance.new("TextLabel", main)
+title.Size = UDim2.new(1, 0, 0, 40)
+title.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+title.Text = "Ps99 OP GUI"
+title.TextColor3 = Color3.new(1, 1, 1)
+title.Font = Enum.Font.GothamBold
+title.TextSize = 18
+
+local closeButton = Instance.new("TextButton", main)
+closeButton.Size = UDim2.new(0, 30, 0, 30)
+closeButton.Position = UDim2.new(1, -35, 0, 5)
+closeButton.Text = "X"
+closeButton.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
+closeButton.TextColor3 = Color3.new(1, 1, 1)
+closeButton.Font = Enum.Font.GothamBold
+closeButton.TextSize = 14
+
+-- Buttons Function
+local function createButton(name, yPos)
+	local btn = Instance.new("TextButton", main)
+	btn.Size = UDim2.new(0.8, 0, 0, 40)
+	btn.Position = UDim2.new(0.1, 0, 0, yPos)
+	btn.Text = name
+	btn.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+	btn.TextColor3 = Color3.new(1, 1, 1)
+	btn.Font = Enum.Font.Gotham
+	btn.TextSize = 14
+	return btn
+end
+
+local petSpawner = createButton("Pet Spawner", 60)
+local gemSpawner = createButton("Gem Spawner", 110)
+local hoverSpawner = createButton("Hoverboard Spawner", 160)
+local gamepassSpawner = createButton("Gamepass Spawner", 210)
+
+-- Popup GUI
+local popup = Instance.new("Frame", gui)
+popup.Name = "SpawnerPopup"
+popup.Position = UDim2.new(0.35, 0, 0.35, 0)
+popup.Size = UDim2.new(0, 250, 0, 150)
+popup.Visible = false
+
+local popupTitle = Instance.new("TextLabel", popup)
+popupTitle.Size = UDim2.new(1, 0, 0, 40)
+popupTitle.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+popupTitle.Text = "ULTIMATE SPAWNER"
+popupTitle.TextColor3 = Color3.new(1, 1, 1)
+popupTitle.Font = Enum.Font.GothamBold
+popupTitle.TextSize = 16
+
+local inputBox = Instance.new("TextBox", popup)
+inputBox.Position = UDim2.new(0.1, 0, 0.45, 0)
+inputBox.Size = UDim2.new(0.8, 0, 0, 30)
+inputBox.PlaceholderText = "Enter value"
+inputBox.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+inputBox.TextColor3 = Color3.new(1, 1, 1)
+inputBox.Font = Enum.Font.Gotham
+inputBox.TextSize = 14
+
+local spawnBtn = Instance.new("TextButton", popup)
+spawnBtn.Position = UDim2.new(0.25, 0, 0.75, 0)
+spawnBtn.Size = UDim2.new(0.5, 0, 0, 25)
+spawnBtn.Text = "Spawn"
+spawnBtn.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+spawnBtn.TextColor3 = Color3.new(1, 1, 1)
+spawnBtn.Font = Enum.Font.GothamBold
+spawnBtn.TextSize = 14
+
+-- Connections
+openButton.MouseButton1Click:Connect(function()
+	main.Visible = true
+	openButton.Visible = false
+end)
+
+closeButton.MouseButton1Click:Connect(function()
+	main.Visible = false
+	openButton.Visible = true
+end)
+
+local function showSpawner()
+	popup.Visible = true
+	inputBox.Text = ""
+end
+
+petSpawner.MouseButton1Click:Connect(showSpawner)
+gemSpawner.MouseButton1Click:Connect(showSpawner)
+hoverSpawner.MouseButton1Click:Connect(showSpawner)
+gamepassSpawner.MouseButton1Click:Connect(showSpawner)
+
+spawnBtn.MouseButton1Click:Connect(function()
+	local text = inputBox.Text
+	if text and text ~= "" then
+		print("Would spawn:", text)
+		popup.Visible = false
+
+		-- Spawned!! Message
+		local message = Instance.new("TextLabel", gui)
+		message.Size = UDim2.new(0, 200, 0, 50)
+		message.Position = UDim2.new(0.5, -100, 0.1, 0)
+		message.BackgroundColor3 = Color3.fromRGB(0, 200, 0)
+		message.Text = "Spawned!!"
+		message.TextColor3 = Color3.new(1, 1, 1)
+		message.Font = Enum.Font.GothamBold
+		message.TextSize = 20
+		message.BackgroundTransparency = 0.2
+
+		task.delay(2, function()
+			message:Destroy()
+		end)
+	end
+end)
+
