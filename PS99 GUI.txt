@@ -154,7 +154,7 @@ AutoFarmBtn.MouseButton1Click:Connect(function()
 end)
 
 SpawnBtn.MouseButton1Click:Connect(function()
-    local amount = tonumber(InputBox.Text)
+    local amount = InputBox.Text  -- Now accepts both numbers and words
     if amount and currentSpawner then
         Popup.Visible = false
         print("Spawning", amount, currentSpawner)
