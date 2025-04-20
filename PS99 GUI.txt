@@ -1,4 +1,4 @@
--- PS99 OP GUI | With Sparkling Effect & Rainbow Button
+-- PS99 OP GUI | With Sparkling Effect & Rainbow Button and INF YIELD Button
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -42,7 +42,7 @@ end)
 local main = Instance.new("Frame", gui)
 main.Name = "Main"
 main.Position = UDim2.new(0.3, 0, 0.3, 0)
-main.Size = UDim2.new(0, 300, 0, 400)
+main.Size = UDim2.new(0, 300, 0, 450)
 main.Visible = false
 main.Active = true
 main.Draggable = true
@@ -81,6 +81,7 @@ local petSpawner = createButton("Pet Spawner", 60)
 local gemSpawner = createButton("Gem Spawner", 110)
 local hoverSpawner = createButton("Hoverboard Spawner", 160)
 local gamepassSpawner = createButton("Gamepass Spawner", 210)
+local infYieldButton = createButton("INF YIELD", 260)
 
 -- Popup GUI
 local popup = Instance.new("Frame", gui)
@@ -175,4 +176,10 @@ spawnBtn.MouseButton1Click:Connect(function()
 			message:Destroy()
 		end)
 	end
+end)
+
+-- INF YIELD Button Function
+infYieldButton.MouseButton1Click:Connect(function()
+	-- Assuming you want to load INF YIELD here
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
 end)
