@@ -1,4 +1,4 @@
--- PS99 OP GUI | With Sparkling Effect & Rainbow Button and INF YIELD Button
+-- PS99 OP GUI | With Sparkling Effect, Rainbow Button, INF YIELD & Huge Hunter Button
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -42,7 +42,7 @@ end)
 local main = Instance.new("Frame", gui)
 main.Name = "Main"
 main.Position = UDim2.new(0.3, 0, 0.3, 0)
-main.Size = UDim2.new(0, 300, 0, 450)
+main.Size = UDim2.new(0, 300, 0, 500)
 main.Visible = false
 main.Active = true
 main.Draggable = true
@@ -82,6 +82,7 @@ local gemSpawner = createButton("Gem Spawner", 110)
 local hoverSpawner = createButton("Hoverboard Spawner", 160)
 local gamepassSpawner = createButton("Gamepass Spawner", 210)
 local infYieldButton = createButton("INF YIELD", 260)
+local hugeHunterButton = createButton("Huge Hunter", 310)
 
 -- Popup GUI
 local popup = Instance.new("Frame", gui)
@@ -128,16 +129,15 @@ local function createSparkles()
 		sparkle.Material = Enum.Material.Neon
 		sparkle.Color = Color3.fromHSV(math.random(), 1, 1)
 		sparkle.Parent = main
-		
-		game:GetService("Debris"):AddItem(sparkle, 1) -- Destroy sparkles after 1 second
+		game:GetService("Debris"):AddItem(sparkle, 1)
 	end
 end
 
--- Connections
+-- Button Connections
 openButton.MouseButton1Click:Connect(function()
 	main.Visible = true
 	openButton.Visible = false
-	createSparkles()  -- Add sparkling effect when GUI opens
+	createSparkles()
 end)
 
 closeButton.MouseButton1Click:Connect(function()
@@ -161,7 +161,6 @@ spawnBtn.MouseButton1Click:Connect(function()
 		print("Would spawn:", text)
 		popup.Visible = false
 
-		-- Spawned!! Message
 		local message = Instance.new("TextLabel", gui)
 		message.Size = UDim2.new(0, 200, 0, 50)
 		message.Position = UDim2.new(0.5, -100, 0.1, 0)
@@ -178,8 +177,22 @@ spawnBtn.MouseButton1Click:Connect(function()
 	end
 end)
 
--- INF YIELD Button Function
 infYieldButton.MouseButton1Click:Connect(function()
-	-- Assuming you want to load INF YIELD here
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+end)
+
+hugeHunterButton.MouseButton1Click:Connect(function()
+	local message = Instance.new("TextLabel", gui)
+	message.Size = UDim2.new(0, 250, 0, 50)
+	message.Position = UDim2.new(0.5, -125, 0.15, 0)
+	message.BackgroundColor3 = Color3.fromRGB(255, 100, 100)
+	message.Text = "Huge Hunter Activated!"
+	message.TextColor3 = Color3.new(1, 1, 1)
+	message.Font = Enum.Font.GothamBold
+	message.TextSize = 20
+	message.BackgroundTransparency = 0.2
+
+	task.delay(2, function()
+		message:Destroy()
+	end)
 end)
